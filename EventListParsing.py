@@ -356,6 +356,8 @@ def createHTMLVisualisation(visualiserDict):
 
     # add <table> tags
     returnHTMLString = '<table style="width:100%">' + "\n" + returnHTMLString + "</table>"
+    # add a style
+    returnHTMLString = "<style>table, th, td {border:1px solid black;}</style>" + returnHTMLString
 
     # do the return
     return returnHTMLString
