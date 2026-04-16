@@ -420,35 +420,36 @@ def writeToHTML(htmlPage):
 
 # ---------- main logic starts here ----------
 
-# build the list of event lists by parsing each page
-pageOneListOfEventLists = wishlistTextToListOfEventLists(rawWishlist.pageOne)
-pageTwoListOfEventLists = wishlistTextToListOfEventLists(rawWishlist.pageTwo)
-# combine the lists into one
-listOfEventLists = pageOneListOfEventLists + pageTwoListOfEventLists
+if __name__ == "__main__":
+    # build the list of event lists by parsing each page
+    pageOneListOfEventLists = wishlistTextToListOfEventLists(rawWishlist.pageOne)
+    pageTwoListOfEventLists = wishlistTextToListOfEventLists(rawWishlist.pageTwo)
+    # combine the lists into one
+    listOfEventLists = pageOneListOfEventLists + pageTwoListOfEventLists
 
-# get a list of event dicts
-listOfEventDicts = listOfEventListsToListOfEventDicts(listOfEventLists)
+    # get a list of event dicts
+    listOfEventDicts = listOfEventListsToListOfEventDicts(listOfEventLists)
 
-# add event hours to the event dicts
-listOfEventDicts = addEventHours(listOfEventDicts)
+    # add event hours to the event dicts
+    listOfEventDicts = addEventHours(listOfEventDicts)
 
-# create a dict of lists, one for each hour where there's an event
-visualiserDict = createWishlistVisualiserDict(listOfEventDicts)
+    # create a dict of lists, one for each hour where there's an event
+    visualiserDict = createWishlistVisualiserDict(listOfEventDicts)
 
-# # create & display a quick and dirty representation to see whether it worked
-# qdVisualisation = createQuickAndDirtyVisualisation(visualiserDict)
-# for row in qdVisualisation:
-#     print(row)
+    # # create & display a quick and dirty representation to see whether it worked
+    # qdVisualisation = createQuickAndDirtyVisualisation(visualiserDict)
+    # for row in qdVisualisation:
+    #     print(row)
 
-# create an HTML table from the visualiser dict
-visualiserHTML = createHTMLVisualisation(visualiserDict)
+    # create an HTML table from the visualiser dict
+    visualiserHTML = createHTMLVisualisation(visualiserDict)
 
-# use the table to create an HTML page
-htmlPage = createHTMLPage(visualiserHTML)
+    # use the table to create an HTML page
+    htmlPage = createHTMLPage(visualiserHTML)
 
-# create an html document
-htmlFilepath = writeToHTML(htmlPage)
+    # create an html document
+    htmlFilepath = writeToHTML(htmlPage)
 
-# display the document in a browser
-print(str(htmlFilepath))
-webbrowser.open_new_tab(htmlFilepath)
+    # display the document in a browser
+    print(str(htmlFilepath))
+    webbrowser.open_new_tab(htmlFilepath)
