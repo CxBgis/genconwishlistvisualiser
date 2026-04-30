@@ -10,7 +10,7 @@ import EventListParsing
 
 ## switch to go between different test modes
 # options are; hardcoded, textbox
-mode = "hardcoded"
+mode = "textbox"
 
 # get the two pages of wishlist
 if mode == "hardcoded":
@@ -19,8 +19,8 @@ if mode == "hardcoded":
     wishlistPageTwo = rawWishlist.pageTwo
 elif mode == "textbox":
     # take from the text boxes
-    wishlistPageOne = None
-    wishlistPageTwo = None
+    wishlistPageOne = st.text_area("Wishlist Page One")
+    wishlistPageTwo = st.text_area("Wishlist Page Two")
 
 # build the list of event lists by parsing each wishlist page
 pageOneListOfEventLists = EventListParsing.wishlistTextToListOfEventLists(wishlistPageOne)
