@@ -283,6 +283,12 @@ def createHTMLVisualisation(visualiserDict):
     listOfStrings = []
     # set up a list of days - we can use this to get the day from the serial hour
     dayList = ["Wed", "Thu", "Fri", "Sat", "Sun"]
+    # set up a variable to track how many empty rows preceded a row - we use this to tidy up the table
+    priorEmptyRows = 0
+    # set a value for how many empty rows we allow before skipping
+    emptyRowsBeforeSkip = 2
+    # set a value for the earliest reasonable start time - we use this to tidy up the table
+    earliestReasonableStartTime = 8
 
     # work through all of the hours
     for hour in range(0, 24*5):
@@ -346,10 +352,30 @@ def createHTMLVisualisation(visualiserDict):
             stringRepresentation = f"<tr>{stringRepresentation}</tr>"
             # append to the list of strings
             listOfStrings.append(stringRepresentation)
+            # reset the empty row counter
+            priorEmptyRows = 0
 
         else:
-            # the hour isn't present, so append a row with just the day & hour
+            # the hour isn't present, but we're going to check to see whether we can skip the row entirely
+            # if this is on a wednesday, or it's before 8am, or it's in a block of empty rows,
+            # then we can probably skip this & make the table more tidy
+
+            # check the day first
+            if dayOfWeek == "Wed":
+                # skip this one
+                continue
+            # check the start time
+            if hourOfDay < earliestReasonableStartTime:
+                # skip this one
+                continue
+            # check the previous empty rows - can we just skip this one because we're in a block of empty time?
+            if priorEmptyRows >= emptyRowsBeforeSkip:
+                # skip this one
+                continue
+            # append a row with just the day & hour
             listOfStrings.append(f"<tr><td>{dayAndTime}</td></tr>")
+            # increment prior empty rows, since we _actually_ added an empty row
+            priorEmptyRows = priorEmptyRows + 1
 
     # set up a return string by joining the list elements on a newline
     returnHTMLString = "\n".join(listOfStrings)
