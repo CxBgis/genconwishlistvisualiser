@@ -335,7 +335,7 @@ def createHTMLVisualisation(visualiserDict):
                             # get the length of the hours occupied list
                             numberOfHours = len(hoursOccupied)
                             # add a rowspan to the cell when adding it to the string representation
-                            stringRepresentation = stringRepresentation + f'<td rowspan="{numberOfHours}" style="background-color:yellow;color:black;">{cellContentsString}</td>' + "\n"
+                            stringRepresentation = stringRepresentation + f'<td rowspan="{numberOfHours}" style="background-color:linen;color:black;">{cellContentsString}</td>' + "\n"
                         else:
                             # it's a subsequent hour, so we can ignore it
                             pass
