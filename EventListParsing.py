@@ -318,11 +318,11 @@ def createHTMLVisualisation(visualiserDict):
                     # get hours occupied
                     hoursOccupied = element["HoursOccupied"]
                     # build a string for the contents of the table cell
-                    cellContentsString = f"{str(priority)}<br>{name}"
+                    cellContentsString = f"{str(priority)}<br><b>{name}</b>"
                     # add the system if there is one
                     if "System" in element.keys():
                         system = element["System"]
-                        cellContentsString = f"{cellContentsString}<br>{system}"
+                        cellContentsString = f"{cellContentsString}<br><i>{system}</i>"
                     
                     ## if this is a multi-hour event, we need to do some more steps to make the cell fill multiple hours
                     # is it a single hour event?
