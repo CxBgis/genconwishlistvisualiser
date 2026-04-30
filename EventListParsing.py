@@ -293,9 +293,9 @@ def createHTMLVisualisation(visualiserDict):
         hourOfDay = hour % 24
         # turn that into a day and time string, padding the hour if needed so that 9 becomes 09:00 & 10 is 10:00
         if len(str(hourOfDay))==1:
-            dayAndTime = f"{dayOfWeek} 0{str(hourOfDay)}:00"
+            dayAndTime = f"{dayOfWeek}0{str(hourOfDay)}:00"
         else:
-            dayAndTime = f"{dayOfWeek} {str(hourOfDay)}:00"
+            dayAndTime = f"{dayOfWeek}{str(hourOfDay)}:00"
         
         ## now start building the table row
         # is the hour in visualiser dict?
@@ -335,7 +335,7 @@ def createHTMLVisualisation(visualiserDict):
                             # get the length of the hours occupied list
                             numberOfHours = len(hoursOccupied)
                             # add a rowspan to the cell when adding it to the string representation
-                            stringRepresentation = stringRepresentation + f'<td rowspan="{numberOfHours}">{cellContentsString}</td>' + "\n"
+                            stringRepresentation = stringRepresentation + f'<td rowspan="{numberOfHours}" style="background-color:yellow;color:black;">{cellContentsString}</td>' + "\n"
                         else:
                             # it's a subsequent hour, so we can ignore it
                             pass
@@ -357,7 +357,7 @@ def createHTMLVisualisation(visualiserDict):
     # add <table> tags
     returnHTMLString = '<table style="width:100%">' + "\n" + returnHTMLString + "</table>"
     # add a style
-    returnHTMLString = "<style>table, th, td {border:1px solid black;}</style>" + returnHTMLString
+    returnHTMLString = "<style>table, th, td {border:1px solid black;border-collapse: collapse;}</style>" + returnHTMLString
 
     # do the return
     return returnHTMLString
