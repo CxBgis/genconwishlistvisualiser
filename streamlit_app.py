@@ -8,7 +8,9 @@ import EventListParsing
 
 # set up a title & some explanation
 st.title("Gen Con Wishlist Visualiser")
-st.text("Creates a visualisation of a Gen Con Event Wishlist, so that you can see how event priorities will interact. The intention here is to make it easy to see those circumstances where one event 'blocks' others, so that they can be ordered in a way that allows for backup events.  The visualiser will skip Wednesday unless there are events, and will skip hours before 8am unless there are events.")
+st.text("""Creates a visualisation of a Gen Con Event Wishlist, so that you can see how event priorities will interact. The intention here is to make it easy to see those circumstances where one event 'blocks' others, so that they can be ordered in a way that allows for backup events.
+        
+The visualiser will skip Wednesday unless there are events, and will skip hours before 8am unless there are events.""")
 
 ## switch to go between different test modes
 # options are; hardcoded, textbox
