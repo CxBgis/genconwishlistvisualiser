@@ -53,8 +53,8 @@ def wishlistTextToListOfEventLists(wishlistTextString):
         # skip the line if it's empty
         if len(line) == 0:
             continue
-        # if the line starts with "Grey events have sold out" we've reached the end of the events
-        if line.startswith("Grey events have sold out"):
+        # if the line starts with "Grey events have sold out" or "Displaying event requests" we've reached the end of the events
+        if line.startswith("Grey events have sold out") or line.startswith("Displaying event requests"):
             break
             
         # if the line contains just a number, it's the priority, and this is a new event
