@@ -30,7 +30,7 @@ def wishlistTextToListOfEventLists(wishlistTextString):
     eventsWishlist = []
     eventList = []
     # set the code for this years events - it's inside the Game ID
-    yearCode = "24ND"
+    yearCode = "26ND"
     # set the regex match string based on that year code, so that we can identify Game IDs
     regexMatchString = "[A-Z]{3}" + yearCode +"[0-9]+"
     # split the page string on newline to get lines
