@@ -13,19 +13,20 @@ st.text("""Creates a visualisation of a Gen Con Event Wishlist, so that you can 
 The visualiser will skip Wednesday unless there are events, and will skip hours before 8am unless there are events.""")
 
 ## switch to go between different modes
-# options are; hardcoded, textbox
-mode = st.menu_button(label="Mode: Test or Live", options=["hardcoded", "textbox"], help="Selects Live or Test modes; Mostly here so that I don't break things while experimenting")
+mode = st.menu_button(label="Mode: Test or Live", options=["Test (hardcoded)", "Live (textbox)"], help="Selects Live or Test modes; Mostly here so that I don't break things while experimenting")
 
 # get the two pages of wishlist if at all possible
 if mode == None:
-    # there has been no selection yet, so set wishlist pages to None
+    # there has been no selection yet, so set wishlist pages to None just in case
     wishlistPageOne = None
     wishlistPageTwo = None
-elif mode == "hardcoded":
+elif mode == "Test (hardcoded)":
     # populate from the hardcoded data
     wishlistPageOne = rawWishlist.pageOne
     wishlistPageTwo = rawWishlist.pageTwo
-elif mode == "textbox":
+    # tell the user about it
+    st.text("Populating using a wishlist from 2024, to show how it works")
+elif mode == "Live (textbox)":
     # add a label for the text box section
     st.header("Wishlist Information Goes Here", divider=True)
     # take from the text boxes
