@@ -12,9 +12,9 @@ st.text("""Creates a visualisation of a Gen Con Event Wishlist, so that you can 
         
 The visualiser will skip Wednesday unless there are events, and will skip hours before 8am unless there are events.""")
 
-## switch to go between different test modes
+## switch to go between different modes
 # options are; hardcoded, textbox
-mode = "textbox"
+mode = st.menu_button(label="Mode: Test or Live", options=["hardcoded", "textbox"], help="Selects Live or Test modes; Mostly here so that I don't break things while experimenting")
 
 # get the two pages of wishlist
 if mode == "hardcoded":
