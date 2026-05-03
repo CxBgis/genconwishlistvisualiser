@@ -29,6 +29,8 @@ elif mode == "Test (hardcoded)":
 elif mode == "Live (textbox)":
     # add a label for the text box section
     st.header("Wishlist Information Goes Here", divider=True)
+    # add some instructions
+    st.text("Copy-Paste from your wishlist into the text areas below, priorties 1-25 in the first are & 26-50 in the second; If you select from the middle of the word 'prority' & down to the end of the time of the last event on the list, that should do the job")
     # take from the text boxes
     wishlistPageOne = st.text_area(label="Wishlist Page One", help="Copy-Paste into here from page 1 of your wishlist, priorties 1-25; If you select from the middle of the word 'prority' & down to the end of the time of the last event on the list, that should do the job")
     wishlistPageTwo = st.text_area(label="Wishlist Page Two", help="Copy-Paste into here from page 2 of your wishlist, priorties 26-50; If you select from the middle of the word 'prority' & down to the end of the time of the last event on the list, that should do the job")
