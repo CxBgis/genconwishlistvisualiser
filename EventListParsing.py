@@ -12,7 +12,7 @@ For each hour list insert None values up to index-1, then insert the Priority an
 Update the dict for each hour with the updated list
 """
 
-import re
+# import re
 import datetime
 import os
 import webbrowser
@@ -29,39 +29,62 @@ def wishlistTextToListOfEventLists(wishlistTextString):
     # set up a list to hold events & a list for the actual event
     eventsWishlist = []
     eventList = []
-    # set the code for this years events - it's inside the Game ID
-    yearCode = "26ND"
-    # set the regex match string based on that year code, so that we can identify Game IDs
-    regexMatchString = "[A-Z]{3}" + yearCode +"[0-9]+"
+    # # set the code for this years events - it's inside the Game ID
+    # yearCode = "26ND"
+    # # set the regex match string based on that year code, so that we can identify Game IDs
+    # regexMatchString = "[A-Z]{3}" + yearCode +"[0-9]+"
+    # set a flag for "we have hit the actual events"
+    foundTheEvents = False
+    # set a variable for the priority, as it annoyingly comes before the event ID
+    priority = None
+
     # split the page string on newline to get lines
     wishlistTextLines = wishlistTextString.split("\n")
 
     # work through the lines, assembling events as we go
     for line in wishlistTextLines:
-        # this might be a title row, so ignore it if it is
-        if "\tGame ID\tTitle\t" in line:
+        # discard lines until we hit something that looks like the header row
+        if foundTheEvents == False and "\tGame ID\tTitle\t" not in line:
             continue
-        # split on tab to get the individual elements
+        # discard the header row, and set found events to true
+        if foundTheEvents == False and "\tGame ID\tTitle\t" in line:
+            foundTheEvents = True
+            continue
+        # skip the line if it's empty
+        if len(line) == 0:
+            continue
+        # if the line starts with "Grey events have sold out" we've reached the end of the events
+        if line.startswith("Grey events have sold out"):
+            break
+            
+        # if the line contains just a number, it's the priority, and this is a new event
+        if (len(line) == 1 and 0<int(line)<10) or (len(line) == 2 and 9<int(line)<51):
+            # set the priority
+            priority = int(line)
+            # it's a new event - is there an existing event to be added to the events wishlist?
+            if len(eventList) > 0:
+                # append it
+                eventsWishlist.append(eventList)
+            # set up a new event
+            eventList = []
+            # add the priority
+            eventList.append(priority)
+            # move on to the next line
+            continue
+            
+        # this is presumably a line with multiple tab-separated parts - split on tab to get the individual elements
         lineElements = line.split("\t")
         ## work through the elements
         for lineElement in lineElements:
-            # are we dealing with a new event? the element would match the game id regex
-            if re.search(regexMatchString, lineElement) is not None:
-                # it's a new event - is there an existing event to be added to the events wishlist?
-                if len(eventList) > 0:
-                    # append it, then set up a new list
-                    eventsWishlist.append(eventList)
-                    eventList = []
-                # add the game id
-                eventList.append(lineElement)
             # is it an empty element?
-            elif lineElement is None or len(lineElement) == 0:
+            if lineElement is None or len(lineElement) == 0:
                 # it's an empty element, so do absolutely nothing
                 pass
             # in all other cases, add it to the list
             else:
                 eventList.append(lineElement)
-    # because we are using the Game ID to trigger writing out an event, when we run out of lines, there's still one event list left, so add that to the events wishlist
+                
+    # because we are using the priority to trigger writing out an event, when we run out of lines, there's still one event list left, so add that to the events wishlist
     if len(eventList) > 0:
         # append it
         eventsWishlist.append(eventList)
@@ -75,45 +98,47 @@ def listOfEventListsToListOfEventDicts(listOfEventLists):
     turns the list of event lists into a list of event dicts,
     so that we have a named value for each part of the event listing
     input is expected to look like this;
-    ['RPG24ND260320',
-    'Psychic Trash Detectives',
-    'Friday',
-    '3 hr',
-    '$8',
-    'Psychic Trash Detectives, 1st Edition',
-    '10:00 AM EDT'],
+    [2,
+    'RPG26ND306958',
+    'Westward Bound',
+    'The Last Caravan, 1st Edition',
+    'Saturday',
+    '10:00 AM EDT',
+    '4 hr',
+    '$16']
     """
 
     # set up a list of keys, in the order they're expected
-    keyList = ["GameID", "Name", "Day", "Duration", "Cost", "System", "Time"]
+    keyList = ["Priority", "GameID", "Name", "System", "Day", "Time", "Duration", "Cost"]
     # there's a chance that there is no system for the event, so we need a different key list for that case
-    systemlessKeyList = ["GameID", "Name", "Day", "Duration", "Cost", "Time"]
+    systemlessKeyList = ["Priority", "GameID", "Name", "Day", "Time", "Duration", "Cost"]
 
-    # work through the event wishlist as an enumeration, so that we can replace things
-    for eventIndex, eventList in enumerate(listOfEventLists):
+    # set up a list to return
+    listOfEventDicts = []
+
+    # work through the event wishlist
+    for eventList in listOfEventLists:
         # set up a dict
         eventDict = {}
-        # work through the eventList items, matching up the list items with the keys in keylist
+        # work through the eventList items using an enumeration, matching up the list items with the keys in keylist
         for index, value in enumerate(eventList):
-            # check the length of the eventlist - if it's got 7 elements, it uses the regular key list, if there are only six, it has no system, and uses the systemless key list
-            if len(eventList) == 7:
+            # check the length of the eventlist - if it's got 8 elements, it uses the regular key list, if there are only 7, it has no system, and uses the systemless key list
+            if len(eventList) == 8:
                 # insert the element at index into the dict with the key corresponding to that element's index
                 eventDict[keyList[index]] = value
             else:
                 # insert the element at index into the dict with the key corresponding to that element's index
                 eventDict[systemlessKeyList[index]] = value
 
-        # add a priority number, based on eventIndex + 1
-        eventDict["Priority"] = eventIndex + 1
         # if there isn't a System key in the dict, which is a valid situation, add an empty string for System
         if not "System" in eventDict.keys():
             eventDict["System"] = ""
 
-        # replace the eventList with eventDict
-        listOfEventLists[eventIndex] = eventDict
+        # add the event dict to the list
+        listOfEventDicts.append(eventDict)
 
     # do the return
-    return listOfEventLists
+    return listOfEventDicts
 
 
 def addEventHours(listOfEventDicts):
