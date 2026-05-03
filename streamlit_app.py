@@ -16,7 +16,7 @@ The visualiser will skip Wednesday unless there are events, and will skip hours 
 mode = st.menu_button(label="Mode: Test or Live", options=["Test (hardcoded)", "Live (textbox)"], help="Selects Live or Test modes; Mostly here so that I don't break things while experimenting")
 # set to Live if not already set, so that the app does something
 if mode is None:
-    mode = "Test (hardcoded)"
+    mode = "Live (textbox)"
 
 # get the two pages of wishlist if at all possible
 if mode == "Test (hardcoded)":
