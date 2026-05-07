@@ -48,3 +48,8 @@ else:
 
     # display the table
     st.html(visualiserHTML)
+
+    # display a button to show the table HTML for copying
+    if st.button("Click Here For Table HTML") == True:
+        # display the table HTML as a text item
+        st.text(visualiserHTML)
